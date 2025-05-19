@@ -1,11 +1,25 @@
 package config
 
+import (
+	"errors"
+	"os"
+)
+
+const (
+	serverAddressEnvName = "GOPHKEEPER_SERVER"
+)
+
 type Config struct {
-	AppName string
+	ServerAddress string
 }
 
-func NewConfig(appName string) *Config {
-	return &Config{
-		AppName: appName,
+func NewConfig() (*Config, error) {
+	serverAddress := os.Getenv(serverAddressEnvName)
+	if serverAddress == "" {
+		return nil, errors.New("missing server address")
 	}
+
+	return &Config{
+		ServerAddress: serverAddress,
+	}, nil
 }

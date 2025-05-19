@@ -1,0 +1,32 @@
+edition = "2023";
+
+package users;
+
+option go_package = "users/proto";
+
+service Users {
+    rpc RegisterUser(RegisterUserRequest) returns (Ack);
+    rpc LoginUser(LoginUserRequest) returns (Ack);
+    rpc AddDevice(AddDeviceRequest) returns (Ack);
+}
+
+message RegisterUserRequest {
+    string email = 1;
+    string password = 2;
+    bytes mk = 3;
+}
+
+message LoginUserRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message AddDeviceRequest {
+    string name = 1;
+    bytes mk = 2;
+}
+
+message Ack {
+    bool received = 1;
+    string error = 2;
+}

@@ -82,7 +82,7 @@ func getCredentials() (email, password string) {
 }
 
 func registerUser(email, password string) {
-	if err := gk.Register(email, password); err != nil {
+	if err := gk.UserService.Register(email, password); err != nil {
 		fmt.Println("User registration failed: ", err.Error())
 	}
 	fmt.Println("Registration successful!")

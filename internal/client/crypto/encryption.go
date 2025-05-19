@@ -6,7 +6,6 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/sha256"
-	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
@@ -102,5 +101,5 @@ func (cs *CryptoService) EncryptWithPassword(data []byte, password string) ([]by
 	combined = append(combined, nonce...)
 	combined = append(combined, encrypted...)
 
-	return []byte(base64.StdEncoding.EncodeToString(combined)), nil
+	return combined, nil
 }

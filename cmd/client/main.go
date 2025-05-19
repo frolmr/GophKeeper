@@ -5,14 +5,7 @@ import (
 
 	"github.com/frolmr/GophKeeper/internal/client/app"
 	cmd "github.com/frolmr/GophKeeper/internal/client/commands"
-	"github.com/frolmr/GophKeeper/internal/client/config"
-	"github.com/frolmr/GophKeeper/internal/client/crypto"
-	"github.com/frolmr/GophKeeper/internal/client/storage"
 	"github.com/frolmr/GophKeeper/pkg/buildinfo"
-)
-
-const (
-	appName = "GophKeeper"
 )
 
 var (
@@ -26,17 +19,15 @@ func main() {
 		BuildDate: buildDate,
 	}
 
-	cfg := config.NewConfig(appName)
-
-	cryptoService := crypto.NewCryptoService()
-
-	localStorate, err := storage.NewLocalStorage()
+	gk, err := app.NewApplication()
 	if err != nil {
-		log.Fatal("failed to initialize application dir")
+		log.Fatalf("failed to initialize app: %v", err)
 	}
-
-	gk := app.NewApplication(cfg, localStorate, cryptoService)
 
 	cmd.SetApp(gk)
 	cmd.Execute()
+
+	if err := gk.Close(); err != nil {
+		log.Fatalf("app close failure: %v", err)
+	}
 }
