@@ -1,0 +1,40 @@
+edition = "2023";
+
+import "google/protobuf/empty.proto";
+
+package devices;
+
+option go_package = "devices/proto";
+
+service Devices {
+    rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
+    rpc GetDevicePK(GetDevicePKRequest) returns (GetDevicePKResponse);
+    rpc GetDeviceMK(GetDeviceMKRequest) returns (GetDeviceMKResponse);
+    rpc AddDevice(AddDeviceRequest) returns (google.protobuf.Empty);
+    rpc ApproveDevice(ApproveDeviceRequest) returns (google.protobuf.Empty);
+}
+
+message Device {
+    string uuid = 1;
+    string name = 2;
+    bool confirmed = 3;
+}
+
+message ListDevicesRequest {}
+
+message ListDevicesResponse { repeated Device devices = 1; }
+
+message AddDeviceRequest { bytes pk = 3; }
+
+message GetDevicePKRequest { string uuid = 1; }
+
+message GetDevicePKResponse { bytes pk = 2; }
+
+message GetDeviceMKRequest {}
+
+message GetDeviceMKResponse { bytes mk = 1; }
+
+message ApproveDeviceRequest {
+    string uuid = 1;
+    bytes mk = 2;
+}

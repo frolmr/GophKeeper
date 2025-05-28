@@ -1,0 +1,37 @@
+edition = "2023";
+
+import "google/protobuf/empty.proto";
+
+package records;
+
+option go_package = "records/proto";
+
+service Records {
+    rpc AddRecord(AddRecordRequest) returns (google.protobuf.Empty);
+    rpc UpdateRecord(UpdateRecordRequest) returns (google.protobuf.Empty);
+    rpc DeleteRecord(DeleteRecordRequest) returns (google.protobuf.Empty);
+    rpc GetRecord(GetRecordRequest) returns (GetRecordResponse);
+    rpc ListRecords(ListRecordsRequest) returns (ListRecordsResponse);
+}
+
+message Record {
+    string uuid = 1;
+    string name = 2;
+    string kind = 3;
+    bytes payload = 4;
+    bytes metadata = 5;
+}
+
+message AddRecordRequest { Record record = 1; }
+
+message UpdateRecordRequest { Record record = 1; }
+
+message GetRecordRequest { string uuid = 1; }
+
+message DeleteRecordRequest { string uuid = 1; }
+
+message GetRecordResponse { Record record = 1; }
+
+message ListRecordsRequest {};
+
+message ListRecordsResponse { repeated Record records = 1; };
