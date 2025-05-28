@@ -1,0 +1,23 @@
+edition = "2023";
+
+import "google/protobuf/empty.proto";
+
+package users;
+
+option go_package = "users/proto";
+
+service Users {
+    rpc RegisterUser(RegisterUserRequest) returns (google.protobuf.Empty);
+    rpc LoginUser(LoginUserRequest) returns (google.protobuf.Empty);
+}
+
+message RegisterUserRequest {
+    string email = 1;
+    string password = 2;
+    bytes mk = 5;
+}
+
+message LoginUserRequest {
+    string email = 1;
+    string password = 2;
+}
