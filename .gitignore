@@ -1,5 +1,6 @@
 # skip coverage files
-coverage.*
+coverage.out
+coverage.html
 
 # skip development keys and certificates
 *.pem
