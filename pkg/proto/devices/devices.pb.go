@@ -9,9 +9,9 @@ package proto
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	_ "google.golang.org/protobuf/types/gofeaturespb"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
-	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -23,12 +23,14 @@ const (
 )
 
 type Device struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          *string                `protobuf:"bytes,1,opt,name=uuid" json:"uuid,omitempty"`
-	Name          *string                `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
-	Confirmed     *bool                  `protobuf:"varint,3,opt,name=confirmed" json:"confirmed,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Uuid        *string                `protobuf:"bytes,1,opt,name=uuid"`
+	xxx_hidden_Name        *string                `protobuf:"bytes,2,opt,name=name"`
+	xxx_hidden_Confirmed   bool                   `protobuf:"varint,3,opt,name=confirmed"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *Device) Reset() {
@@ -56,34 +58,113 @@ func (x *Device) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Device.ProtoReflect.Descriptor instead.
-func (*Device) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_devices_devices_proto_rawDescGZIP(), []int{0}
-}
-
 func (x *Device) GetUuid() string {
-	if x != nil && x.Uuid != nil {
-		return *x.Uuid
+	if x != nil {
+		if x.xxx_hidden_Uuid != nil {
+			return *x.xxx_hidden_Uuid
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Device) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
+	if x != nil {
+		if x.xxx_hidden_Name != nil {
+			return *x.xxx_hidden_Name
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Device) GetConfirmed() bool {
-	if x != nil && x.Confirmed != nil {
-		return *x.Confirmed
+	if x != nil {
+		return x.xxx_hidden_Confirmed
 	}
 	return false
 }
 
+func (x *Device) SetUuid(v string) {
+	x.xxx_hidden_Uuid = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+}
+
+func (x *Device) SetName(v string) {
+	x.xxx_hidden_Name = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *Device) SetConfirmed(v bool) {
+	x.xxx_hidden_Confirmed = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+}
+
+func (x *Device) HasUuid() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *Device) HasName() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *Device) HasConfirmed() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *Device) ClearUuid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Uuid = nil
+}
+
+func (x *Device) ClearName() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Name = nil
+}
+
+func (x *Device) ClearConfirmed() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Confirmed = false
+}
+
+type Device_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Uuid      *string
+	Name      *string
+	Confirmed *bool
+}
+
+func (b0 Device_builder) Build() *Device {
+	m0 := &Device{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Uuid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		x.xxx_hidden_Uuid = b.Uuid
+	}
+	if b.Name != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		x.xxx_hidden_Name = b.Name
+	}
+	if b.Confirmed != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_Confirmed = *b.Confirmed
+	}
+	return m0
+}
+
 type ListDevicesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state         protoimpl.MessageState `protogen:"opaque.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -113,16 +194,23 @@ func (x *ListDevicesRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListDevicesRequest.ProtoReflect.Descriptor instead.
-func (*ListDevicesRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_devices_devices_proto_rawDescGZIP(), []int{1}
+type ListDevicesRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+}
+
+func (b0 ListDevicesRequest_builder) Build() *ListDevicesRequest {
+	m0 := &ListDevicesRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	return m0
 }
 
 type ListDevicesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Devices       []*Device              `protobuf:"bytes,1,rep,name=devices" json:"devices,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Devices *[]*Device             `protobuf:"bytes,1,rep,name=devices"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListDevicesResponse) Reset() {
@@ -150,23 +238,40 @@ func (x *ListDevicesResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListDevicesResponse.ProtoReflect.Descriptor instead.
-func (*ListDevicesResponse) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_devices_devices_proto_rawDescGZIP(), []int{2}
-}
-
 func (x *ListDevicesResponse) GetDevices() []*Device {
 	if x != nil {
-		return x.Devices
+		if x.xxx_hidden_Devices != nil {
+			return *x.xxx_hidden_Devices
+		}
 	}
 	return nil
 }
 
+func (x *ListDevicesResponse) SetDevices(v []*Device) {
+	x.xxx_hidden_Devices = &v
+}
+
+type ListDevicesResponse_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Devices []*Device
+}
+
+func (b0 ListDevicesResponse_builder) Build() *ListDevicesResponse {
+	m0 := &ListDevicesResponse{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Devices = &b.Devices
+	return m0
+}
+
 type AddDeviceRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Pk            []byte                 `protobuf:"bytes,3,opt,name=pk" json:"pk,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Pk          []byte                 `protobuf:"bytes,3,opt,name=pk"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *AddDeviceRequest) Reset() {
@@ -194,23 +299,57 @@ func (x *AddDeviceRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AddDeviceRequest.ProtoReflect.Descriptor instead.
-func (*AddDeviceRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_devices_devices_proto_rawDescGZIP(), []int{3}
-}
-
 func (x *AddDeviceRequest) GetPk() []byte {
 	if x != nil {
-		return x.Pk
+		return x.xxx_hidden_Pk
 	}
 	return nil
 }
 
+func (x *AddDeviceRequest) SetPk(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Pk = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
+}
+
+func (x *AddDeviceRequest) HasPk() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *AddDeviceRequest) ClearPk() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Pk = nil
+}
+
+type AddDeviceRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Pk []byte
+}
+
+func (b0 AddDeviceRequest_builder) Build() *AddDeviceRequest {
+	m0 := &AddDeviceRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Pk != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
+		x.xxx_hidden_Pk = b.Pk
+	}
+	return m0
+}
+
 type GetDevicePKRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          *string                `protobuf:"bytes,1,opt,name=uuid" json:"uuid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Uuid        *string                `protobuf:"bytes,1,opt,name=uuid"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *GetDevicePKRequest) Reset() {
@@ -238,23 +377,57 @@ func (x *GetDevicePKRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDevicePKRequest.ProtoReflect.Descriptor instead.
-func (*GetDevicePKRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_devices_devices_proto_rawDescGZIP(), []int{4}
-}
-
 func (x *GetDevicePKRequest) GetUuid() string {
-	if x != nil && x.Uuid != nil {
-		return *x.Uuid
+	if x != nil {
+		if x.xxx_hidden_Uuid != nil {
+			return *x.xxx_hidden_Uuid
+		}
+		return ""
 	}
 	return ""
 }
 
+func (x *GetDevicePKRequest) SetUuid(v string) {
+	x.xxx_hidden_Uuid = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
+}
+
+func (x *GetDevicePKRequest) HasUuid() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *GetDevicePKRequest) ClearUuid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Uuid = nil
+}
+
+type GetDevicePKRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Uuid *string
+}
+
+func (b0 GetDevicePKRequest_builder) Build() *GetDevicePKRequest {
+	m0 := &GetDevicePKRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Uuid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
+		x.xxx_hidden_Uuid = b.Uuid
+	}
+	return m0
+}
+
 type GetDevicePKResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Pk            []byte                 `protobuf:"bytes,2,opt,name=pk" json:"pk,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Pk          []byte                 `protobuf:"bytes,2,opt,name=pk"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *GetDevicePKResponse) Reset() {
@@ -282,20 +455,52 @@ func (x *GetDevicePKResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDevicePKResponse.ProtoReflect.Descriptor instead.
-func (*GetDevicePKResponse) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_devices_devices_proto_rawDescGZIP(), []int{5}
-}
-
 func (x *GetDevicePKResponse) GetPk() []byte {
 	if x != nil {
-		return x.Pk
+		return x.xxx_hidden_Pk
 	}
 	return nil
 }
 
+func (x *GetDevicePKResponse) SetPk(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Pk = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
+}
+
+func (x *GetDevicePKResponse) HasPk() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *GetDevicePKResponse) ClearPk() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Pk = nil
+}
+
+type GetDevicePKResponse_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Pk []byte
+}
+
+func (b0 GetDevicePKResponse_builder) Build() *GetDevicePKResponse {
+	m0 := &GetDevicePKResponse{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Pk != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
+		x.xxx_hidden_Pk = b.Pk
+	}
+	return m0
+}
+
 type GetDeviceMKRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state         protoimpl.MessageState `protogen:"opaque.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -325,16 +530,25 @@ func (x *GetDeviceMKRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDeviceMKRequest.ProtoReflect.Descriptor instead.
-func (*GetDeviceMKRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_devices_devices_proto_rawDescGZIP(), []int{6}
+type GetDeviceMKRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+}
+
+func (b0 GetDeviceMKRequest_builder) Build() *GetDeviceMKRequest {
+	m0 := &GetDeviceMKRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	return m0
 }
 
 type GetDeviceMKResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Mk            []byte                 `protobuf:"bytes,1,opt,name=mk" json:"mk,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Mk          []byte                 `protobuf:"bytes,1,opt,name=mk"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *GetDeviceMKResponse) Reset() {
@@ -362,24 +576,58 @@ func (x *GetDeviceMKResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDeviceMKResponse.ProtoReflect.Descriptor instead.
-func (*GetDeviceMKResponse) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_devices_devices_proto_rawDescGZIP(), []int{7}
-}
-
 func (x *GetDeviceMKResponse) GetMk() []byte {
 	if x != nil {
-		return x.Mk
+		return x.xxx_hidden_Mk
 	}
 	return nil
 }
 
+func (x *GetDeviceMKResponse) SetMk(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Mk = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
+}
+
+func (x *GetDeviceMKResponse) HasMk() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *GetDeviceMKResponse) ClearMk() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Mk = nil
+}
+
+type GetDeviceMKResponse_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Mk []byte
+}
+
+func (b0 GetDeviceMKResponse_builder) Build() *GetDeviceMKResponse {
+	m0 := &GetDeviceMKResponse{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Mk != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
+		x.xxx_hidden_Mk = b.Mk
+	}
+	return m0
+}
+
 type ApproveDeviceRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          *string                `protobuf:"bytes,1,opt,name=uuid" json:"uuid,omitempty"`
-	Mk            []byte                 `protobuf:"bytes,2,opt,name=mk" json:"mk,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Uuid        *string                `protobuf:"bytes,1,opt,name=uuid"`
+	xxx_hidden_Mk          []byte                 `protobuf:"bytes,2,opt,name=mk"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *ApproveDeviceRequest) Reset() {
@@ -407,30 +655,87 @@ func (x *ApproveDeviceRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ApproveDeviceRequest.ProtoReflect.Descriptor instead.
-func (*ApproveDeviceRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_devices_devices_proto_rawDescGZIP(), []int{8}
-}
-
 func (x *ApproveDeviceRequest) GetUuid() string {
-	if x != nil && x.Uuid != nil {
-		return *x.Uuid
+	if x != nil {
+		if x.xxx_hidden_Uuid != nil {
+			return *x.xxx_hidden_Uuid
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *ApproveDeviceRequest) GetMk() []byte {
 	if x != nil {
-		return x.Mk
+		return x.xxx_hidden_Mk
 	}
 	return nil
+}
+
+func (x *ApproveDeviceRequest) SetUuid(v string) {
+	x.xxx_hidden_Uuid = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+}
+
+func (x *ApproveDeviceRequest) SetMk(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Mk = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+}
+
+func (x *ApproveDeviceRequest) HasUuid() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *ApproveDeviceRequest) HasMk() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *ApproveDeviceRequest) ClearUuid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Uuid = nil
+}
+
+func (x *ApproveDeviceRequest) ClearMk() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Mk = nil
+}
+
+type ApproveDeviceRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Uuid *string
+	Mk   []byte
+}
+
+func (b0 ApproveDeviceRequest_builder) Build() *ApproveDeviceRequest {
+	m0 := &ApproveDeviceRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Uuid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		x.xxx_hidden_Uuid = b.Uuid
+	}
+	if b.Mk != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		x.xxx_hidden_Mk = b.Mk
+	}
+	return m0
 }
 
 var File_pkg_proto_devices_devices_proto protoreflect.FileDescriptor
 
 const file_pkg_proto_devices_devices_proto_rawDesc = "" +
 	"\n" +
-	"\x1fpkg/proto/devices/devices.proto\x12\adevices\x1a\x1bgoogle/protobuf/empty.proto\"N\n" +
+	"\x1fpkg/proto/devices/devices.proto\x12\adevices\x1a\x1bgoogle/protobuf/empty.proto\x1a!google/protobuf/go_features.proto\"N\n" +
 	"\x06Device\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1c\n" +
@@ -455,19 +760,7 @@ const file_pkg_proto_devices_devices_proto_rawDesc = "" +
 	"\vGetDevicePK\x12\x1b.devices.GetDevicePKRequest\x1a\x1c.devices.GetDevicePKResponse\x12H\n" +
 	"\vGetDeviceMK\x12\x1b.devices.GetDeviceMKRequest\x1a\x1c.devices.GetDeviceMKResponse\x12>\n" +
 	"\tAddDevice\x12\x19.devices.AddDeviceRequest\x1a\x16.google.protobuf.Empty\x12F\n" +
-	"\rApproveDevice\x12\x1d.devices.ApproveDeviceRequest\x1a\x16.google.protobuf.EmptyB\x0fZ\rdevices/protob\beditionsp\xe8\a"
-
-var (
-	file_pkg_proto_devices_devices_proto_rawDescOnce sync.Once
-	file_pkg_proto_devices_devices_proto_rawDescData []byte
-)
-
-func file_pkg_proto_devices_devices_proto_rawDescGZIP() []byte {
-	file_pkg_proto_devices_devices_proto_rawDescOnce.Do(func() {
-		file_pkg_proto_devices_devices_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_pkg_proto_devices_devices_proto_rawDesc), len(file_pkg_proto_devices_devices_proto_rawDesc)))
-	})
-	return file_pkg_proto_devices_devices_proto_rawDescData
-}
+	"\rApproveDevice\x12\x1d.devices.ApproveDeviceRequest\x1a\x16.google.protobuf.EmptyB\x17Z\rdevices/proto\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
 
 var file_pkg_proto_devices_devices_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_pkg_proto_devices_devices_proto_goTypes = []any{

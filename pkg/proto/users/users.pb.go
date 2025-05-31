@@ -9,9 +9,9 @@ package proto
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	_ "google.golang.org/protobuf/types/gofeaturespb"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
-	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -23,12 +23,14 @@ const (
 )
 
 type RegisterUserRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         *string                `protobuf:"bytes,1,opt,name=email" json:"email,omitempty"`
-	Password      *string                `protobuf:"bytes,2,opt,name=password" json:"password,omitempty"`
-	Mk            []byte                 `protobuf:"bytes,5,opt,name=mk" json:"mk,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Email       *string                `protobuf:"bytes,1,opt,name=email"`
+	xxx_hidden_Password    *string                `protobuf:"bytes,2,opt,name=password"`
+	xxx_hidden_Mk          []byte                 `protobuf:"bytes,5,opt,name=mk"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *RegisterUserRequest) Reset() {
@@ -56,38 +58,122 @@ func (x *RegisterUserRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RegisterUserRequest.ProtoReflect.Descriptor instead.
-func (*RegisterUserRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_users_users_proto_rawDescGZIP(), []int{0}
-}
-
 func (x *RegisterUserRequest) GetEmail() string {
-	if x != nil && x.Email != nil {
-		return *x.Email
+	if x != nil {
+		if x.xxx_hidden_Email != nil {
+			return *x.xxx_hidden_Email
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *RegisterUserRequest) GetPassword() string {
-	if x != nil && x.Password != nil {
-		return *x.Password
+	if x != nil {
+		if x.xxx_hidden_Password != nil {
+			return *x.xxx_hidden_Password
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *RegisterUserRequest) GetMk() []byte {
 	if x != nil {
-		return x.Mk
+		return x.xxx_hidden_Mk
 	}
 	return nil
 }
 
+func (x *RegisterUserRequest) SetEmail(v string) {
+	x.xxx_hidden_Email = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+}
+
+func (x *RegisterUserRequest) SetPassword(v string) {
+	x.xxx_hidden_Password = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *RegisterUserRequest) SetMk(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Mk = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+}
+
+func (x *RegisterUserRequest) HasEmail() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *RegisterUserRequest) HasPassword() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *RegisterUserRequest) HasMk() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *RegisterUserRequest) ClearEmail() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Email = nil
+}
+
+func (x *RegisterUserRequest) ClearPassword() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Password = nil
+}
+
+func (x *RegisterUserRequest) ClearMk() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Mk = nil
+}
+
+type RegisterUserRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Email    *string
+	Password *string
+	Mk       []byte
+}
+
+func (b0 RegisterUserRequest_builder) Build() *RegisterUserRequest {
+	m0 := &RegisterUserRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Email != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		x.xxx_hidden_Email = b.Email
+	}
+	if b.Password != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		x.xxx_hidden_Password = b.Password
+	}
+	if b.Mk != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_Mk = b.Mk
+	}
+	return m0
+}
+
 type LoginUserRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         *string                `protobuf:"bytes,1,opt,name=email" json:"email,omitempty"`
-	Password      *string                `protobuf:"bytes,2,opt,name=password" json:"password,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Email       *string                `protobuf:"bytes,1,opt,name=email"`
+	xxx_hidden_Password    *string                `protobuf:"bytes,2,opt,name=password"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *LoginUserRequest) Reset() {
@@ -115,30 +201,87 @@ func (x *LoginUserRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use LoginUserRequest.ProtoReflect.Descriptor instead.
-func (*LoginUserRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_users_users_proto_rawDescGZIP(), []int{1}
-}
-
 func (x *LoginUserRequest) GetEmail() string {
-	if x != nil && x.Email != nil {
-		return *x.Email
+	if x != nil {
+		if x.xxx_hidden_Email != nil {
+			return *x.xxx_hidden_Email
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *LoginUserRequest) GetPassword() string {
-	if x != nil && x.Password != nil {
-		return *x.Password
+	if x != nil {
+		if x.xxx_hidden_Password != nil {
+			return *x.xxx_hidden_Password
+		}
+		return ""
 	}
 	return ""
+}
+
+func (x *LoginUserRequest) SetEmail(v string) {
+	x.xxx_hidden_Email = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+}
+
+func (x *LoginUserRequest) SetPassword(v string) {
+	x.xxx_hidden_Password = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+}
+
+func (x *LoginUserRequest) HasEmail() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *LoginUserRequest) HasPassword() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *LoginUserRequest) ClearEmail() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Email = nil
+}
+
+func (x *LoginUserRequest) ClearPassword() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Password = nil
+}
+
+type LoginUserRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Email    *string
+	Password *string
+}
+
+func (b0 LoginUserRequest_builder) Build() *LoginUserRequest {
+	m0 := &LoginUserRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Email != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		x.xxx_hidden_Email = b.Email
+	}
+	if b.Password != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		x.xxx_hidden_Password = b.Password
+	}
+	return m0
 }
 
 var File_pkg_proto_users_users_proto protoreflect.FileDescriptor
 
 const file_pkg_proto_users_users_proto_rawDesc = "" +
 	"\n" +
-	"\x1bpkg/proto/users/users.proto\x12\x05users\x1a\x1bgoogle/protobuf/empty.proto\"W\n" +
+	"\x1bpkg/proto/users/users.proto\x12\x05users\x1a\x1bgoogle/protobuf/empty.proto\x1a!google/protobuf/go_features.proto\"W\n" +
 	"\x13RegisterUserRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x0e\n" +
@@ -148,19 +291,7 @@ const file_pkg_proto_users_users_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword2\x89\x01\n" +
 	"\x05Users\x12B\n" +
 	"\fRegisterUser\x12\x1a.users.RegisterUserRequest\x1a\x16.google.protobuf.Empty\x12<\n" +
-	"\tLoginUser\x12\x17.users.LoginUserRequest\x1a\x16.google.protobuf.EmptyB\rZ\vusers/protob\beditionsp\xe8\a"
-
-var (
-	file_pkg_proto_users_users_proto_rawDescOnce sync.Once
-	file_pkg_proto_users_users_proto_rawDescData []byte
-)
-
-func file_pkg_proto_users_users_proto_rawDescGZIP() []byte {
-	file_pkg_proto_users_users_proto_rawDescOnce.Do(func() {
-		file_pkg_proto_users_users_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_pkg_proto_users_users_proto_rawDesc), len(file_pkg_proto_users_users_proto_rawDesc)))
-	})
-	return file_pkg_proto_users_users_proto_rawDescData
-}
+	"\tLoginUser\x12\x17.users.LoginUserRequest\x1a\x16.google.protobuf.EmptyB\x15Z\vusers/proto\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
 
 var file_pkg_proto_users_users_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_pkg_proto_users_users_proto_goTypes = []any{

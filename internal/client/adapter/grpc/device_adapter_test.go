@@ -50,9 +50,9 @@ func TestSendAddDeviceRequest_Success(t *testing.T) {
 
 	pk := []byte("public-key")
 
-	expectedReq := &pb.AddDeviceRequest{
+	expectedReq := pb.AddDeviceRequest_builder{
 		Pk: pk,
-	}
+	}.Build()
 
 	mockClient.On("AddDevice", mock.Anything, expectedReq, mock.Anything).
 		Return(&emptypb.Empty{}, nil)
@@ -68,9 +68,9 @@ func TestSendAddDeviceRequest_AlreadyExists(t *testing.T) {
 
 	pk := []byte("public-key")
 
-	expectedReq := &pb.AddDeviceRequest{
+	expectedReq := pb.AddDeviceRequest_builder{
 		Pk: pk,
-	}
+	}.Build()
 
 	expectedErr := status.Error(codes.AlreadyExists, "device already exists")
 	mockClient.On("AddDevice", mock.Anything, expectedReq, mock.Anything).
@@ -88,9 +88,9 @@ func TestSendAddDeviceRequest_Failure(t *testing.T) {
 
 	pk := []byte("public-key")
 
-	expectedReq := &pb.AddDeviceRequest{
+	expectedReq := pb.AddDeviceRequest_builder{
 		Pk: pk,
-	}
+	}.Build()
 
 	expectedErr := errors.New("connection error")
 	mockClient.On("AddDevice", mock.Anything, expectedReq, mock.Anything).
@@ -114,21 +114,21 @@ func TestSendListDevicesRequest_Success(t *testing.T) {
 	conf2 := false
 
 	expectedDevices := []*pb.Device{
-		{
+		pb.Device_builder{
 			Uuid:      &uuid1,
 			Name:      &name1,
 			Confirmed: &conf1,
-		},
-		{
+		}.Build(),
+		pb.Device_builder{
 			Uuid:      &uuid2,
 			Name:      &name2,
 			Confirmed: &conf2,
-		},
+		}.Build(),
 	}
 
-	expectedResp := &pb.ListDevicesResponse{
+	expectedResp := pb.ListDevicesResponse_builder{
 		Devices: expectedDevices,
-	}
+	}.Build()
 
 	mockClient.On("ListDevices", mock.Anything, &pb.ListDevicesRequest{}, mock.Anything).
 		Return(expectedResp, nil)
@@ -167,13 +167,13 @@ func TestSendGetDevicePKRequest_Success(t *testing.T) {
 	deviceID := "uuid1"
 	pk := []byte("public-key")
 
-	expectedReq := &pb.GetDevicePKRequest{
+	expectedReq := pb.GetDevicePKRequest_builder{
 		Uuid: &deviceID,
-	}
+	}.Build()
 
-	expectedResp := &pb.GetDevicePKResponse{
+	expectedResp := pb.GetDevicePKResponse_builder{
 		Pk: pk,
-	}
+	}.Build()
 
 	mockClient.On("GetDevicePK", mock.Anything, expectedReq, mock.Anything).
 		Return(expectedResp, nil)
@@ -190,9 +190,9 @@ func TestSendGetDevicePKRequest_Failure(t *testing.T) {
 
 	deviceID := "uuid1"
 
-	expectedReq := &pb.GetDevicePKRequest{
+	expectedReq := pb.GetDevicePKRequest_builder{
 		Uuid: &deviceID,
-	}
+	}.Build()
 
 	expectedErr := errors.New("connection error")
 	mockClient.On("GetDevicePK", mock.Anything, expectedReq, mock.Anything).
@@ -212,10 +212,10 @@ func TestSendApproveDeviceRequest_Success(t *testing.T) {
 	deviceID := "uuid1"
 	mk := []byte("master-key")
 
-	expectedReq := &pb.ApproveDeviceRequest{
+	expectedReq := pb.ApproveDeviceRequest_builder{
 		Uuid: &deviceID,
 		Mk:   mk,
-	}
+	}.Build()
 
 	mockClient.On("ApproveDevice", mock.Anything, expectedReq, mock.Anything).
 		Return(&emptypb.Empty{}, nil)
@@ -232,10 +232,10 @@ func TestSendApproveDeviceRequest_Failure(t *testing.T) {
 	deviceID := "uuid1"
 	mk := []byte("master-key")
 
-	expectedReq := &pb.ApproveDeviceRequest{
+	expectedReq := pb.ApproveDeviceRequest_builder{
 		Uuid: &deviceID,
 		Mk:   mk,
-	}
+	}.Build()
 
 	expectedErr := errors.New("connection error")
 	mockClient.On("ApproveDevice", mock.Anything, expectedReq, mock.Anything).
@@ -253,9 +253,9 @@ func TestSendGetDeviceMKRequest_Success(t *testing.T) {
 
 	mk := []byte("master-key")
 
-	expectedResp := &pb.GetDeviceMKResponse{
+	expectedResp := pb.GetDeviceMKResponse_builder{
 		Mk: mk,
-	}
+	}.Build()
 
 	mockClient.On("GetDeviceMK", mock.Anything, &pb.GetDeviceMKRequest{}, mock.Anything).
 		Return(expectedResp, nil)

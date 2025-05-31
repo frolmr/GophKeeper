@@ -47,18 +47,18 @@ func TestDevicesService_AddDevice(t *testing.T) {
 				),
 				contextkeys.UserKey, user,
 			),
-			input: &pb.AddDeviceRequest{
+			input: pb.AddDeviceRequest_builder{
 				Pk: []byte("public-key"),
-			},
+			}.Build(),
 			expectedError: nil,
 		},
 		{
 			name:       "MissingDeviceData",
 			setupMocks: func(repo *mocks.MockDevicesRepository) {},
 			ctx:        context.Background(),
-			input: &pb.AddDeviceRequest{
+			input: pb.AddDeviceRequest_builder{
 				Pk: []byte("public-key"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "device data doesn't provided"),
 		},
 		{
@@ -68,9 +68,9 @@ func TestDevicesService_AddDevice(t *testing.T) {
 				context.WithValue(context.Background(), contextkeys.DeviceNameKey, "test-device"),
 				contextkeys.DeviceIDKey, "device-id",
 			),
-			input: &pb.AddDeviceRequest{
+			input: pb.AddDeviceRequest_builder{
 				Pk: []byte("public-key"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "user not found"),
 		},
 		{
@@ -83,9 +83,9 @@ func TestDevicesService_AddDevice(t *testing.T) {
 				),
 				contextkeys.UserKey, user,
 			),
-			input: &pb.AddDeviceRequest{
+			input: pb.AddDeviceRequest_builder{
 				Pk: nil,
-			},
+			}.Build(),
 			expectedError: status.Error(codes.InvalidArgument, "invalid device name or pk"),
 		},
 		{
@@ -100,9 +100,9 @@ func TestDevicesService_AddDevice(t *testing.T) {
 				),
 				contextkeys.UserKey, user,
 			),
-			input: &pb.AddDeviceRequest{
+			input: pb.AddDeviceRequest_builder{
 				Pk: []byte("public-key"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.AlreadyExists, "device already registered"),
 		},
 		{
@@ -117,9 +117,9 @@ func TestDevicesService_AddDevice(t *testing.T) {
 				),
 				contextkeys.UserKey, user,
 			),
-			input: &pb.AddDeviceRequest{
+			input: pb.AddDeviceRequest_builder{
 				Pk: []byte("public-key"),
-			},
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "get device error: %v", errors.New("db error")),
 		},
 		{
@@ -141,9 +141,9 @@ func TestDevicesService_AddDevice(t *testing.T) {
 				),
 				contextkeys.UserKey, user,
 			),
-			input: &pb.AddDeviceRequest{
+			input: pb.AddDeviceRequest_builder{
 				Pk: []byte("public-key"),
-			},
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "can't add device: %v", errors.New("db error")),
 		},
 	}
@@ -250,9 +250,9 @@ func TestDevicesService_ListDevices(t *testing.T) {
 				assert.NoError(t, err)
 				assert.Len(t, resp.GetDevices(), tt.expectedCount)
 				if tt.expectedCount > 0 {
-					assert.Equal(t, deviceUUID.String(), *resp.Devices[0].Uuid)
-					assert.Equal(t, "device-1", *resp.Devices[0].Name)
-					assert.True(t, *resp.Devices[0].Confirmed)
+					assert.Equal(t, deviceUUID.String(), resp.GetDevices()[0].GetUuid())
+					assert.Equal(t, "device-1", resp.GetDevices()[0].GetName())
+					assert.True(t, resp.GetDevices()[0].GetConfirmed())
 				}
 			}
 		})
@@ -306,7 +306,7 @@ func TestDevicesService_GetDeviceMK(t *testing.T) {
 				assert.EqualError(t, err, tt.expectedError.Error())
 			} else {
 				assert.NoError(t, err)
-				assert.Equal(t, tt.expectedMK, resp.Mk)
+				assert.Equal(t, tt.expectedMK, resp.GetMk())
 			}
 		})
 	}
@@ -336,21 +336,21 @@ func TestDevicesService_GetDevicePK(t *testing.T) {
 				}, nil)
 			},
 			ctx:        context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input:      &pb.GetDevicePKRequest{Uuid: &deviceUUIDStr},
+			input:      pb.GetDevicePKRequest_builder{Uuid: &deviceUUIDStr}.Build(),
 			expectedPK: []byte("public-key"),
 		},
 		{
 			name:          "UserNotFound",
 			setupMocks:    func(repo *mocks.MockDevicesRepository) {},
 			ctx:           context.Background(),
-			input:         &pb.GetDevicePKRequest{Uuid: &deviceUUIDStr},
+			input:         pb.GetDevicePKRequest_builder{Uuid: &deviceUUIDStr}.Build(),
 			expectedError: status.Error(codes.NotFound, "user not found"),
 		},
 		{
 			name:          "InvalidUUID",
 			setupMocks:    func(repo *mocks.MockDevicesRepository) {},
 			ctx:           context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input:         &pb.GetDevicePKRequest{Uuid: &invalidUUID},
+			input:         pb.GetDevicePKRequest_builder{Uuid: &invalidUUID}.Build(),
 			expectedError: status.Error(codes.InvalidArgument, "can't parse device uuid"),
 		},
 		{
@@ -359,7 +359,7 @@ func TestDevicesService_GetDevicePK(t *testing.T) {
 				repo.EXPECT().GetDeviceByUserUUIDAndUUID(gomock.Any(), deviceUUID, userUUID).Return(nil, nil)
 			},
 			ctx:           context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input:         &pb.GetDevicePKRequest{Uuid: &deviceUUIDStr},
+			input:         pb.GetDevicePKRequest_builder{Uuid: &deviceUUIDStr}.Build(),
 			expectedError: status.Error(codes.NotFound, "no devices to confirm"),
 		},
 		{
@@ -368,7 +368,7 @@ func TestDevicesService_GetDevicePK(t *testing.T) {
 				repo.EXPECT().GetDeviceByUserUUIDAndUUID(gomock.Any(), deviceUUID, userUUID).Return(nil, errors.New("db error"))
 			},
 			ctx:           context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input:         &pb.GetDevicePKRequest{Uuid: &deviceUUIDStr},
+			input:         pb.GetDevicePKRequest_builder{Uuid: &deviceUUIDStr}.Build(),
 			expectedError: status.Error(codes.NotFound, "no devices to confirm"),
 		},
 		{
@@ -380,7 +380,7 @@ func TestDevicesService_GetDevicePK(t *testing.T) {
 				}, nil)
 			},
 			ctx:           context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input:         &pb.GetDevicePKRequest{Uuid: &deviceUUIDStr},
+			input:         pb.GetDevicePKRequest_builder{Uuid: &deviceUUIDStr}.Build(),
 			expectedError: status.Error(codes.NotFound, "device has no PK"),
 		},
 	}
@@ -404,7 +404,7 @@ func TestDevicesService_GetDevicePK(t *testing.T) {
 				assert.EqualError(t, err, tt.expectedError.Error())
 			} else {
 				assert.NoError(t, err)
-				assert.Equal(t, tt.expectedPK, resp.Pk)
+				assert.Equal(t, tt.expectedPK, resp.GetPk())
 			}
 		})
 	}
@@ -434,29 +434,29 @@ func TestDevicesService_ApproveDevice(t *testing.T) {
 				repo.EXPECT().ConfirmDevice(gomock.Any(), mockUUID, userUUID, []byte("master-key")).Return(nil)
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.ApproveDeviceRequest{
+			input: pb.ApproveDeviceRequest_builder{
 				Uuid: &deviceUUIDStr,
 				Mk:   []byte("master-key"),
-			},
+			}.Build(),
 		},
 		{
 			name:       "UserNotFound",
 			setupMocks: func(repo *mocks.MockDevicesRepository) {},
 			ctx:        context.Background(),
-			input: &pb.ApproveDeviceRequest{
+			input: pb.ApproveDeviceRequest_builder{
 				Uuid: &deviceUUIDStr,
 				Mk:   []byte("master-key"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "user not found"),
 		},
 		{
 			name:       "InvalidUUID",
 			setupMocks: func(repo *mocks.MockDevicesRepository) {},
 			ctx:        context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.ApproveDeviceRequest{
+			input: pb.ApproveDeviceRequest_builder{
 				Uuid: &invalidUUID,
 				Mk:   []byte("master-key"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.InvalidArgument, "can't parse device uuid"),
 		},
 		{
@@ -465,10 +465,10 @@ func TestDevicesService_ApproveDevice(t *testing.T) {
 				repo.EXPECT().GetDeviceByUserUUIDAndUUID(gomock.Any(), deviceUUID, userUUID).Return(nil, nil)
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.ApproveDeviceRequest{
+			input: pb.ApproveDeviceRequest_builder{
 				Uuid: &deviceUUIDStr,
 				Mk:   []byte("master-key"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "no devices to confirm"),
 		},
 		{
@@ -477,10 +477,10 @@ func TestDevicesService_ApproveDevice(t *testing.T) {
 				repo.EXPECT().GetDeviceByUserUUIDAndUUID(gomock.Any(), deviceUUID, userUUID).Return(nil, errors.New("db error"))
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.ApproveDeviceRequest{
+			input: pb.ApproveDeviceRequest_builder{
 				Uuid: &deviceUUIDStr,
 				Mk:   []byte("master-key"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "no devices to confirm"),
 		},
 		{
@@ -490,10 +490,10 @@ func TestDevicesService_ApproveDevice(t *testing.T) {
 				repo.EXPECT().ConfirmDevice(gomock.Any(), mockUUID, userUUID, []byte("master-key")).Return(errors.New("db error"))
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.ApproveDeviceRequest{
+			input: pb.ApproveDeviceRequest_builder{
 				Uuid: &deviceUUIDStr,
 				Mk:   []byte("master-key"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.Internal, "device update failure"),
 		},
 	}

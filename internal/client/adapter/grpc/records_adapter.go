@@ -23,17 +23,17 @@ func (a *GRPCAdapter) SendAddRecordRequest(encRec domain.EncryptedRecord) error 
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 
-	rec := pb.Record{
+	rec := pb.Record_builder{
 		Uuid:     &encRec.UUID,
 		Name:     &encRec.Name,
 		Kind:     &encRec.Kind,
 		Payload:  encRec.Payload,
 		Metadata: encRec.Metadata,
-	}
+	}.Build()
 
-	req := &pb.AddRecordRequest{
-		Record: &rec,
-	}
+	req := pb.AddRecordRequest_builder{
+		Record: rec,
+	}.Build()
 
 	_, err := a.recordClient.AddRecord(ctx, req)
 	if err != nil {
@@ -58,17 +58,17 @@ func (a *GRPCAdapter) SendUpdateRecordRequest(encRec domain.EncryptedRecord) err
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 
-	rec := pb.Record{
+	rec := pb.Record_builder{
 		Uuid:     &encRec.UUID,
 		Name:     &encRec.Name,
 		Kind:     &encRec.Kind,
 		Payload:  encRec.Payload,
 		Metadata: encRec.Metadata,
-	}
+	}.Build()
 
-	req := &pb.UpdateRecordRequest{
-		Record: &rec,
-	}
+	req := pb.UpdateRecordRequest_builder{
+		Record: rec,
+	}.Build()
 
 	_, err := a.recordClient.UpdateRecord(ctx, req)
 	if err != nil {
@@ -91,9 +91,9 @@ func (a *GRPCAdapter) SendDeleteRecordRequest(recUUID string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 
-	req := &pb.DeleteRecordRequest{
+	req := pb.DeleteRecordRequest_builder{
 		Uuid: &recUUID,
-	}
+	}.Build()
 
 	_, err := a.recordClient.DeleteRecord(ctx, req)
 	if err != nil {
@@ -117,9 +117,9 @@ func (a *GRPCAdapter) SendGetRecordRequest(recUUID string) (*domain.EncryptedRec
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 
-	req := &pb.GetRecordRequest{
+	req := pb.GetRecordRequest_builder{
 		Uuid: &recUUID,
-	}
+	}.Build()
 
 	resp, err := a.recordClient.GetRecord(ctx, req)
 	if err != nil {
@@ -127,11 +127,11 @@ func (a *GRPCAdapter) SendGetRecordRequest(recUUID string) (*domain.EncryptedRec
 	}
 
 	encRec := domain.EncryptedRecord{
-		UUID:     *resp.Record.Uuid,
-		Name:     *resp.Record.Name,
-		Kind:     *resp.Record.Kind,
-		Payload:  resp.Record.Payload,
-		Metadata: resp.Record.Metadata,
+		UUID:     resp.GetRecord().GetUuid(),
+		Name:     resp.GetRecord().GetName(),
+		Kind:     resp.GetRecord().GetKind(),
+		Payload:  resp.GetRecord().GetPayload(),
+		Metadata: resp.GetRecord().GetMetadata(),
 	}
 
 	return &encRec, nil
@@ -147,7 +147,7 @@ func (a *GRPCAdapter) SendListRecordsRequest() ([]domain.EncryptedRecord, error)
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 
-	req := &pb.ListRecordsRequest{}
+	req := pb.ListRecordsRequest_builder{}.Build()
 
 	resp, err := a.recordClient.ListRecords(ctx, req)
 	if err != nil {
@@ -155,13 +155,13 @@ func (a *GRPCAdapter) SendListRecordsRequest() ([]domain.EncryptedRecord, error)
 	}
 
 	var encRecords []domain.EncryptedRecord
-	for _, respRec := range resp.Records {
+	for _, respRec := range resp.GetRecords() {
 		encRec := domain.EncryptedRecord{
-			UUID:     *respRec.Uuid,
-			Name:     *respRec.Name,
-			Kind:     *respRec.Kind,
-			Payload:  respRec.Payload,
-			Metadata: respRec.Metadata,
+			UUID:     respRec.GetUuid(),
+			Name:     respRec.GetName(),
+			Kind:     respRec.GetKind(),
+			Payload:  respRec.GetPayload(),
+			Metadata: respRec.GetMetadata(),
 		}
 		encRecords = append(encRecords, encRec)
 	}

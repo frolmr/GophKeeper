@@ -11,7 +11,7 @@ The application follows a client-server architecture where sensitive data is enc
 
     🔑 Multi-Device Support: Access your secrets from multiple devices
 
-    🛡️ Zero-Knowledge Architecture: Server never sees unencrypted data
+    🛡️ End-to-end encryption: Server never sees unencrypted data
 
     📱 Cross-Platform: Works on Windows, macOS, and Linux
 
@@ -50,6 +50,26 @@ export JWT_SECRET=$(openssl rand -base64 32)
 go build -o gophkeeper-server
 ./gophkeeper-server
 ```
+
+#### Containerized launch
+There is also `docker-compose.yml` file in the root directory to launch the server in test purposes.
+dokcer compose will launch server and database in containers
+
+Before launching server need to generate ceritificates:
+
+``` bash
+mkcert -install
+mkcert -key-file key.pem -cert-file cert.pem localhost 127.0.0.1 ::1
+```
+
+After that docker compose file might be launched:
+
+``` bash
+docker compose up -d
+```
+
+This will start 2 containers with the database and the server.
+
 
 ### Client Installation
 
