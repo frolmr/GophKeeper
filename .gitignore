@@ -3,3 +3,6 @@ coverage.*
 
 # skip development keys and certificates
 *.pem
+
+# ENV file
+.env

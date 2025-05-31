@@ -97,15 +97,15 @@ func (ds *DevicesService) ListDevices(ctx context.Context, in *pb.ListDevicesReq
 	var respDevices []*pb.Device
 	for _, device := range devices {
 		deviceUUID := device.UUID.String()
-		respDevice := pb.Device{
+		respDevice := pb.Device_builder{
 			Uuid:      &deviceUUID,
 			Name:      &device.Name,
 			Confirmed: &device.Confirmed,
-		}
-		respDevices = append(respDevices, &respDevice)
+		}.Build()
+		respDevices = append(respDevices, respDevice)
 	}
 
-	return &pb.ListDevicesResponse{Devices: respDevices}, nil
+	return pb.ListDevicesResponse_builder{Devices: respDevices}.Build(), nil
 }
 
 // GetDeviceMK retrieves the master key for the requesting device.
@@ -116,7 +116,7 @@ func (ds *DevicesService) GetDeviceMK(ctx context.Context, in *pb.GetDeviceMKReq
 		return nil, status.Error(codes.NotFound, "user not found")
 	}
 
-	return &pb.GetDeviceMKResponse{Mk: device.MK}, nil
+	return pb.GetDeviceMKResponse_builder{Mk: device.MK}.Build(), nil
 }
 
 // GetDevicePK retrieves the public key of another device.
@@ -141,7 +141,7 @@ func (ds *DevicesService) GetDevicePK(ctx context.Context, in *pb.GetDevicePKReq
 		return nil, status.Error(codes.NotFound, "device has no PK")
 	}
 
-	return &pb.GetDevicePKResponse{Pk: requestedDevice.PK}, nil
+	return pb.GetDevicePKResponse_builder{Pk: requestedDevice.PK}.Build(), nil
 }
 
 // ApproveDevice confirms a new device and shares the master key.
@@ -161,7 +161,7 @@ func (ds *DevicesService) ApproveDevice(ctx context.Context, in *pb.ApproveDevic
 		return nil, status.Error(codes.NotFound, "no devices to confirm")
 	}
 
-	if err := ds.repo.ConfirmDevice(ctx, deviceToUpdate.UUID, user.UUID, in.Mk); err != nil {
+	if err := ds.repo.ConfirmDevice(ctx, deviceToUpdate.UUID, user.UUID, in.GetMk()); err != nil {
 		return nil, status.Error(codes.Internal, "device update failure")
 	}
 

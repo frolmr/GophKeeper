@@ -46,11 +46,11 @@ func TestSendRegisterRequest_Success(t *testing.T) {
 	password := "password123"
 	mk := []byte("masterkey")
 
-	expectedReq := &pb.RegisterUserRequest{
+	expectedReq := pb.RegisterUserRequest_builder{
 		Email:    &email,
 		Password: &password,
 		Mk:       mk,
-	}
+	}.Build()
 
 	mockClient.On("RegisterUser", mock.Anything, expectedReq, mock.Anything).
 		Return(&emptypb.Empty{}, nil)
@@ -68,11 +68,11 @@ func TestSendRegisterRequest_Failure(t *testing.T) {
 	password := "password123"
 	mk := []byte("masterkey")
 
-	expectedReq := &pb.RegisterUserRequest{
+	expectedReq := pb.RegisterUserRequest_builder{
 		Email:    &email,
 		Password: &password,
 		Mk:       mk,
-	}
+	}.Build()
 
 	expectedErr := errors.New("connection error")
 	mockClient.On("RegisterUser", mock.Anything, expectedReq, mock.Anything).
@@ -92,10 +92,10 @@ func TestSendLoginRequest_Success(t *testing.T) {
 	email := "test@example.com"
 	password := "password123"
 
-	expectedReq := &pb.LoginUserRequest{
+	expectedReq := pb.LoginUserRequest_builder{
 		Email:    &email,
 		Password: &password,
-	}
+	}.Build()
 
 	mockClient.On("LoginUser", mock.Anything, expectedReq, mock.Anything).
 		Return(&emptypb.Empty{}, nil)
@@ -114,10 +114,10 @@ func TestSendLoginRequest_Failure(t *testing.T) {
 		email := "test@example.com"
 		password := "password123"
 
-		expectedReq := &pb.LoginUserRequest{
+		expectedReq := pb.LoginUserRequest_builder{
 			Email:    &email,
 			Password: &password,
-		}
+		}.Build()
 
 		expectedErr := errors.New("connection error")
 		mockClient.On("LoginUser", mock.Anything, expectedReq, mock.Anything).
@@ -137,10 +137,10 @@ func TestSendLoginRequest_Failure(t *testing.T) {
 		email := "test@example.com"
 		password := "password123"
 
-		expectedReq := &pb.LoginUserRequest{
+		expectedReq := pb.LoginUserRequest_builder{
 			Email:    &email,
 			Password: &password,
-		}
+		}.Build()
 
 		mockClient.On("LoginUser", mock.Anything, expectedReq, mock.Anything).
 			Return(&emptypb.Empty{}, nil)

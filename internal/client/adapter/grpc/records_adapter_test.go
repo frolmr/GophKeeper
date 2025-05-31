@@ -61,15 +61,15 @@ func TestSendAddRecordRequest_Success(t *testing.T) {
 		Metadata: metadata,
 	}
 
-	expectedReq := &pb.AddRecordRequest{
-		Record: &pb.Record{
+	expectedReq := pb.AddRecordRequest_builder{
+		Record: pb.Record_builder{
 			Uuid:     &uuid,
 			Name:     &name,
 			Kind:     &kind,
 			Payload:  payload,
 			Metadata: metadata,
-		},
-	}
+		}.Build(),
+	}.Build()
 
 	mockClient.On("AddRecord", mock.Anything, expectedReq, mock.Anything).
 		Return(&emptypb.Empty{}, nil)
@@ -97,15 +97,15 @@ func TestSendAddRecordRequest_Failure(t *testing.T) {
 		Metadata: metadata,
 	}
 
-	expectedReq := &pb.AddRecordRequest{
-		Record: &pb.Record{
+	expectedReq := pb.AddRecordRequest_builder{
+		Record: pb.Record_builder{
 			Uuid:     &uuid,
 			Name:     &name,
 			Kind:     &kind,
 			Payload:  payload,
 			Metadata: metadata,
-		},
-	}
+		}.Build(),
+	}.Build()
 
 	expectedErr := errors.New("connection error")
 	mockClient.On("AddRecord", mock.Anything, expectedReq, mock.Anything).
@@ -135,15 +135,15 @@ func TestSendUpdateRecordRequest_Success(t *testing.T) {
 		Metadata: metadata,
 	}
 
-	expectedReq := &pb.UpdateRecordRequest{
-		Record: &pb.Record{
+	expectedReq := pb.UpdateRecordRequest_builder{
+		Record: pb.Record_builder{
 			Uuid:     &uuid,
 			Name:     &name,
 			Kind:     &kind,
 			Payload:  payload,
 			Metadata: metadata,
-		},
-	}
+		}.Build(),
+	}.Build()
 
 	mockClient.On("UpdateRecord", mock.Anything, expectedReq, mock.Anything).
 		Return(&emptypb.Empty{}, nil)
@@ -171,15 +171,15 @@ func TestSendUpdateRecordRequest_Failure(t *testing.T) {
 		Metadata: metadata,
 	}
 
-	expectedReq := &pb.UpdateRecordRequest{
-		Record: &pb.Record{
+	expectedReq := pb.UpdateRecordRequest_builder{
+		Record: pb.Record_builder{
 			Uuid:     &uuid,
 			Name:     &name,
 			Kind:     &kind,
 			Payload:  payload,
 			Metadata: metadata,
-		},
-	}
+		}.Build(),
+	}.Build()
 
 	expectedErr := errors.New("connection error")
 	mockClient.On("UpdateRecord", mock.Anything, expectedReq, mock.Anything).
@@ -197,9 +197,9 @@ func TestSendDeleteRecordRequest_Success(t *testing.T) {
 
 	recUUID := "test-uuid"
 
-	expectedReq := &pb.DeleteRecordRequest{
+	expectedReq := pb.DeleteRecordRequest_builder{
 		Uuid: &recUUID,
-	}
+	}.Build()
 
 	mockClient.On("DeleteRecord", mock.Anything, expectedReq, mock.Anything).
 		Return(&emptypb.Empty{}, nil)
@@ -215,9 +215,9 @@ func TestSendDeleteRecordRequest_Failure(t *testing.T) {
 
 	recUUID := "test-uuid"
 
-	expectedReq := &pb.DeleteRecordRequest{
+	expectedReq := pb.DeleteRecordRequest_builder{
 		Uuid: &recUUID,
-	}
+	}.Build()
 
 	expectedErr := errors.New("connection error")
 	mockClient.On("DeleteRecord", mock.Anything, expectedReq, mock.Anything).
@@ -239,19 +239,19 @@ func TestSendGetRecordRequest_Success(t *testing.T) {
 	payload := []byte("test-payload")
 	metadata := []byte("test-metadata")
 
-	expectedReq := &pb.GetRecordRequest{
+	expectedReq := pb.GetRecordRequest_builder{
 		Uuid: &recUUID,
-	}
+	}.Build()
 
-	expectedResp := &pb.GetRecordResponse{
-		Record: &pb.Record{
+	expectedResp := pb.GetRecordResponse_builder{
+		Record: pb.Record_builder{
 			Uuid:     &recUUID,
 			Name:     &name,
 			Kind:     &kind,
 			Payload:  payload,
 			Metadata: metadata,
-		},
-	}
+		}.Build(),
+	}.Build()
 
 	mockClient.On("GetRecord", mock.Anything, expectedReq, mock.Anything).
 		Return(expectedResp, nil)
@@ -272,9 +272,9 @@ func TestSendGetRecordRequest_Failure(t *testing.T) {
 
 	recUUID := "test-uuid"
 
-	expectedReq := &pb.GetRecordRequest{
+	expectedReq := pb.GetRecordRequest_builder{
 		Uuid: &recUUID,
-	}
+	}.Build()
 
 	expectedErr := errors.New("connection error")
 	mockClient.On("GetRecord", mock.Anything, expectedReq, mock.Anything).
@@ -303,24 +303,24 @@ func TestSendListRecordsRequest_Success(t *testing.T) {
 	payload2 := []byte("payload2")
 	metadata2 := []byte("metadata2")
 
-	expectedResp := &pb.ListRecordsResponse{
+	expectedResp := pb.ListRecordsResponse_builder{
 		Records: []*pb.Record{
-			{
+			pb.Record_builder{
 				Uuid:     &uuid1,
 				Name:     &name1,
 				Kind:     &kind1,
 				Payload:  payload1,
 				Metadata: metadata1,
-			},
-			{
+			}.Build(),
+			pb.Record_builder{
 				Uuid:     &uuid2,
 				Name:     &name2,
 				Kind:     &kind2,
 				Payload:  payload2,
 				Metadata: metadata2,
-			},
+			}.Build(),
 		},
-	}
+	}.Build()
 
 	mockClient.On("ListRecords", mock.Anything, &pb.ListRecordsRequest{}, mock.Anything).
 		Return(expectedResp, nil)

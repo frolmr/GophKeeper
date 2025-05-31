@@ -25,11 +25,11 @@ func (a *GRPCAdapter) SendRegisterRequest(email, password string, mk []byte) err
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 
-	req := &pb.RegisterUserRequest{
+	req := pb.RegisterUserRequest_builder{
 		Email:    &email,
 		Password: &password,
 		Mk:       mk,
-	}
+	}.Build()
 
 	_, err := a.userClient.RegisterUser(ctx, req)
 	if err != nil {
@@ -57,10 +57,10 @@ func (a *GRPCAdapter) SendLoginRequest(email, password string) (string, error) {
 	var header metadata.MD
 	ctx = metadata.NewOutgoingContext(ctx, metadata.Pairs())
 
-	req := &pb.LoginUserRequest{
+	req := pb.LoginUserRequest_builder{
 		Email:    &email,
 		Password: &password,
-	}
+	}.Build()
 
 	_, err := a.userClient.LoginUser(ctx, req, grpc.Header(&header))
 	if err != nil {

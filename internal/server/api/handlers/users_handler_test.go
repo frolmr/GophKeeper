@@ -77,21 +77,21 @@ func TestUsersService_RegisterUser(t *testing.T) {
 				context.WithValue(context.Background(), contextkeys.DeviceNameKey, "test-device"),
 				contextkeys.DeviceIDKey, "device-id",
 			),
-			input: &pb.RegisterUserRequest{
+			input: pb.RegisterUserRequest_builder{
 				Email:    ptr("test@example.com"),
 				Password: ptr("password"),
 				Mk:       []byte("master-key"),
-			},
+			}.Build(),
 			expectedError: nil,
 		},
 		{
 			name:       "EmptyEmailOrPassword",
 			setupMocks: func(repo *mocks.MockUsersRepository) {},
 			ctx:        context.Background(),
-			input: &pb.RegisterUserRequest{
+			input: pb.RegisterUserRequest_builder{
 				Email:    ptr(""),
 				Password: ptr("password"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.Unauthenticated, "invalid login or password"),
 		},
 		{
@@ -100,10 +100,10 @@ func TestUsersService_RegisterUser(t *testing.T) {
 				repo.EXPECT().GetUserByEmail(gomock.Any(), "existing@example.com").Return(&domain.User{}, nil)
 			},
 			ctx: context.Background(),
-			input: &pb.RegisterUserRequest{
+			input: pb.RegisterUserRequest_builder{
 				Email:    ptr("existing@example.com"),
 				Password: ptr("password"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.AlreadyExists, "user already registered"),
 		},
 		{
@@ -112,10 +112,10 @@ func TestUsersService_RegisterUser(t *testing.T) {
 				repo.EXPECT().GetUserByEmail(gomock.Any(), "test@example.com").Return(nil, nil)
 			},
 			ctx: context.Background(),
-			input: &pb.RegisterUserRequest{
+			input: pb.RegisterUserRequest_builder{
 				Email:    ptr("test@example.com"),
 				Password: ptr("password"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "device data doesn't provided"),
 		},
 		{
@@ -124,10 +124,10 @@ func TestUsersService_RegisterUser(t *testing.T) {
 				repo.EXPECT().GetUserByEmail(gomock.Any(), "test@example.com").Return(nil, errors.New("db error"))
 			},
 			ctx: context.Background(),
-			input: &pb.RegisterUserRequest{
+			input: pb.RegisterUserRequest_builder{
 				Email:    ptr("test@example.com"),
 				Password: ptr("password"),
-			},
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "database error: %v", errors.New("db error")),
 		},
 		{
@@ -147,11 +147,11 @@ func TestUsersService_RegisterUser(t *testing.T) {
 				context.WithValue(context.Background(), contextkeys.DeviceNameKey, "test-device"),
 				contextkeys.DeviceIDKey, "device-id",
 			),
-			input: &pb.RegisterUserRequest{
+			input: pb.RegisterUserRequest_builder{
 				Email:    ptr("test@example.com"),
 				Password: ptr("password"),
 				Mk:       []byte("master-key"),
-			},
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "Can't create user: %v", errors.New("create error")),
 		},
 	}
@@ -202,10 +202,10 @@ func TestUsersService_LoginUser(t *testing.T) {
 				}, nil)
 				jwt.EXPECT().GenerateAccessToken(userUUID).Return("test-token", nil)
 			},
-			input: &pb.LoginUserRequest{
+			input: pb.LoginUserRequest_builder{
 				Email:    ptr("test@example.com"),
 				Password: ptr("correct-password"),
-			},
+			}.Build(),
 			expectTokenSet: true,
 		},
 		{
@@ -218,10 +218,10 @@ func TestUsersService_LoginUser(t *testing.T) {
 				}, nil)
 				jwt.EXPECT().GenerateAccessToken(userUUID).Return("", errors.New("token error"))
 			},
-			input: &pb.LoginUserRequest{
+			input: pb.LoginUserRequest_builder{
 				Email:    ptr("test@example.com"),
 				Password: ptr("correct-password"),
-			},
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "can't generate auth token: %v", errors.New("token error")),
 		},
 		{
@@ -229,10 +229,10 @@ func TestUsersService_LoginUser(t *testing.T) {
 			setupMocks: func(repo *mocks.MockUsersRepository, jwt *mocks.MockJWTManager) {
 				// No expectations as we fail before repository calls
 			},
-			input: &pb.LoginUserRequest{
+			input: pb.LoginUserRequest_builder{
 				Email:    ptr(""),
 				Password: ptr("password"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.Unauthenticated, "invalid login or password"),
 		},
 		{
@@ -240,10 +240,10 @@ func TestUsersService_LoginUser(t *testing.T) {
 			setupMocks: func(repo *mocks.MockUsersRepository, jwt *mocks.MockJWTManager) {
 				repo.EXPECT().GetUserByEmail(gomock.Any(), "nonexistent@example.com").Return(nil, nil)
 			},
-			input: &pb.LoginUserRequest{
+			input: pb.LoginUserRequest_builder{
 				Email:    ptr("nonexistent@example.com"),
 				Password: ptr("password"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "User not found"),
 		},
 		{
@@ -251,10 +251,10 @@ func TestUsersService_LoginUser(t *testing.T) {
 			setupMocks: func(repo *mocks.MockUsersRepository, jwt *mocks.MockJWTManager) {
 				repo.EXPECT().GetUserByEmail(gomock.Any(), "test@example.com").Return(nil, errors.New("db error"))
 			},
-			input: &pb.LoginUserRequest{
+			input: pb.LoginUserRequest_builder{
 				Email:    ptr("test@example.com"),
 				Password: ptr("password"),
-			},
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "database error: %v", errors.New("db error")),
 		},
 		{
@@ -266,10 +266,10 @@ func TestUsersService_LoginUser(t *testing.T) {
 					EmailConfirmed: false,
 				}, nil)
 			},
-			input: &pb.LoginUserRequest{
+			input: pb.LoginUserRequest_builder{
 				Email:    ptr("unconfirmed@example.com"),
 				Password: ptr("correct-password"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.Unauthenticated, "User email is unconfirmed! Please confirm email first!"),
 		},
 		{
@@ -281,10 +281,10 @@ func TestUsersService_LoginUser(t *testing.T) {
 					EmailConfirmed: true,
 				}, nil)
 			},
-			input: &pb.LoginUserRequest{
+			input: pb.LoginUserRequest_builder{
 				Email:    ptr("test@example.com"),
 				Password: ptr("wrong-password"),
-			},
+			}.Build(),
 			expectedError: status.Error(codes.Unauthenticated, "invalid login or password"),
 		},
 		{
@@ -297,10 +297,10 @@ func TestUsersService_LoginUser(t *testing.T) {
 				}, nil)
 				jwt.EXPECT().GenerateAccessToken(userUUID).Return("", errors.New("token error"))
 			},
-			input: &pb.LoginUserRequest{
+			input: pb.LoginUserRequest_builder{
 				Email:    ptr("test@example.com"),
 				Password: ptr("correct-password"),
-			},
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "can't generate auth token: %v", errors.New("token error")),
 		},
 	}

@@ -26,9 +26,9 @@ func (a *GRPCAdapter) SendAddDeviceRequest(pk []byte) error {
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 
-	req := &pb.AddDeviceRequest{
+	req := pb.AddDeviceRequest_builder{
 		Pk: pk,
-	}
+	}.Build()
 
 	_, err := a.deviceClient.AddDevice(ctx, req)
 	if st, ok := status.FromError(err); ok {
@@ -60,11 +60,11 @@ func (a *GRPCAdapter) SendListDevicesRequest() ([]domain.DeviceOnServer, error) 
 	}
 
 	var devices []domain.DeviceOnServer
-	for _, respDevice := range resp.Devices {
+	for _, respDevice := range resp.GetDevices() {
 		device := domain.DeviceOnServer{
-			ID:        *respDevice.Uuid,
-			Name:      *respDevice.Name,
-			Confirmed: *respDevice.Confirmed,
+			ID:        respDevice.GetUuid(),
+			Name:      respDevice.GetName(),
+			Confirmed: respDevice.GetConfirmed(),
 		}
 		devices = append(devices, device)
 	}
@@ -86,9 +86,9 @@ func (a *GRPCAdapter) SendGetDevicePKRequest(id string) ([]byte, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 
-	req := &pb.GetDevicePKRequest{
+	req := pb.GetDevicePKRequest_builder{
 		Uuid: &id,
-	}
+	}.Build()
 
 	resp, err := a.deviceClient.GetDevicePK(ctx, req)
 	if err != nil {
@@ -112,10 +112,10 @@ func (a *GRPCAdapter) SendApproveDeviceRequest(id string, mk []byte) error {
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 
-	req := &pb.ApproveDeviceRequest{
+	req := pb.ApproveDeviceRequest_builder{
 		Uuid: &id,
 		Mk:   mk,
-	}
+	}.Build()
 
 	_, err := a.deviceClient.ApproveDevice(ctx, req)
 	if err != nil {

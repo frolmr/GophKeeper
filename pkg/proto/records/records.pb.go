@@ -9,9 +9,9 @@ package proto
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	_ "google.golang.org/protobuf/types/gofeaturespb"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
-	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -23,14 +23,16 @@ const (
 )
 
 type Record struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          *string                `protobuf:"bytes,1,opt,name=uuid" json:"uuid,omitempty"`
-	Name          *string                `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
-	Kind          *string                `protobuf:"bytes,3,opt,name=kind" json:"kind,omitempty"`
-	Payload       []byte                 `protobuf:"bytes,4,opt,name=payload" json:"payload,omitempty"`
-	Metadata      []byte                 `protobuf:"bytes,5,opt,name=metadata" json:"metadata,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Uuid        *string                `protobuf:"bytes,1,opt,name=uuid"`
+	xxx_hidden_Name        *string                `protobuf:"bytes,2,opt,name=name"`
+	xxx_hidden_Kind        *string                `protobuf:"bytes,3,opt,name=kind"`
+	xxx_hidden_Payload     []byte                 `protobuf:"bytes,4,opt,name=payload"`
+	xxx_hidden_Metadata    []byte                 `protobuf:"bytes,5,opt,name=metadata"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *Record) Reset() {
@@ -58,51 +60,183 @@ func (x *Record) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Record.ProtoReflect.Descriptor instead.
-func (*Record) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_records_records_proto_rawDescGZIP(), []int{0}
-}
-
 func (x *Record) GetUuid() string {
-	if x != nil && x.Uuid != nil {
-		return *x.Uuid
+	if x != nil {
+		if x.xxx_hidden_Uuid != nil {
+			return *x.xxx_hidden_Uuid
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Record) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
+	if x != nil {
+		if x.xxx_hidden_Name != nil {
+			return *x.xxx_hidden_Name
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Record) GetKind() string {
-	if x != nil && x.Kind != nil {
-		return *x.Kind
+	if x != nil {
+		if x.xxx_hidden_Kind != nil {
+			return *x.xxx_hidden_Kind
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Record) GetPayload() []byte {
 	if x != nil {
-		return x.Payload
+		return x.xxx_hidden_Payload
 	}
 	return nil
 }
 
 func (x *Record) GetMetadata() []byte {
 	if x != nil {
-		return x.Metadata
+		return x.xxx_hidden_Metadata
 	}
 	return nil
 }
 
+func (x *Record) SetUuid(v string) {
+	x.xxx_hidden_Uuid = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+}
+
+func (x *Record) SetName(v string) {
+	x.xxx_hidden_Name = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+}
+
+func (x *Record) SetKind(v string) {
+	x.xxx_hidden_Kind = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+}
+
+func (x *Record) SetPayload(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Payload = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+}
+
+func (x *Record) SetMetadata(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Metadata = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+}
+
+func (x *Record) HasUuid() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *Record) HasName() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *Record) HasKind() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *Record) HasPayload() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *Record) HasMetadata() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
+func (x *Record) ClearUuid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Uuid = nil
+}
+
+func (x *Record) ClearName() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Name = nil
+}
+
+func (x *Record) ClearKind() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Kind = nil
+}
+
+func (x *Record) ClearPayload() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_Payload = nil
+}
+
+func (x *Record) ClearMetadata() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_Metadata = nil
+}
+
+type Record_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Uuid     *string
+	Name     *string
+	Kind     *string
+	Payload  []byte
+	Metadata []byte
+}
+
+func (b0 Record_builder) Build() *Record {
+	m0 := &Record{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Uuid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
+		x.xxx_hidden_Uuid = b.Uuid
+	}
+	if b.Name != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
+		x.xxx_hidden_Name = b.Name
+	}
+	if b.Kind != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
+		x.xxx_hidden_Kind = b.Kind
+	}
+	if b.Payload != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
+		x.xxx_hidden_Payload = b.Payload
+	}
+	if b.Metadata != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		x.xxx_hidden_Metadata = b.Metadata
+	}
+	return m0
+}
+
 type AddRecordRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Record        *Record                `protobuf:"bytes,1,opt,name=record" json:"record,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Record *Record                `protobuf:"bytes,1,opt,name=record"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *AddRecordRequest) Reset() {
@@ -130,23 +264,47 @@ func (x *AddRecordRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AddRecordRequest.ProtoReflect.Descriptor instead.
-func (*AddRecordRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_records_records_proto_rawDescGZIP(), []int{1}
-}
-
 func (x *AddRecordRequest) GetRecord() *Record {
 	if x != nil {
-		return x.Record
+		return x.xxx_hidden_Record
 	}
 	return nil
 }
 
+func (x *AddRecordRequest) SetRecord(v *Record) {
+	x.xxx_hidden_Record = v
+}
+
+func (x *AddRecordRequest) HasRecord() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Record != nil
+}
+
+func (x *AddRecordRequest) ClearRecord() {
+	x.xxx_hidden_Record = nil
+}
+
+type AddRecordRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Record *Record
+}
+
+func (b0 AddRecordRequest_builder) Build() *AddRecordRequest {
+	m0 := &AddRecordRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Record = b.Record
+	return m0
+}
+
 type UpdateRecordRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Record        *Record                `protobuf:"bytes,1,opt,name=record" json:"record,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Record *Record                `protobuf:"bytes,1,opt,name=record"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *UpdateRecordRequest) Reset() {
@@ -174,23 +332,49 @@ func (x *UpdateRecordRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateRecordRequest.ProtoReflect.Descriptor instead.
-func (*UpdateRecordRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_records_records_proto_rawDescGZIP(), []int{2}
-}
-
 func (x *UpdateRecordRequest) GetRecord() *Record {
 	if x != nil {
-		return x.Record
+		return x.xxx_hidden_Record
 	}
 	return nil
 }
 
+func (x *UpdateRecordRequest) SetRecord(v *Record) {
+	x.xxx_hidden_Record = v
+}
+
+func (x *UpdateRecordRequest) HasRecord() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Record != nil
+}
+
+func (x *UpdateRecordRequest) ClearRecord() {
+	x.xxx_hidden_Record = nil
+}
+
+type UpdateRecordRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Record *Record
+}
+
+func (b0 UpdateRecordRequest_builder) Build() *UpdateRecordRequest {
+	m0 := &UpdateRecordRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Record = b.Record
+	return m0
+}
+
 type GetRecordRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          *string                `protobuf:"bytes,1,opt,name=uuid" json:"uuid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Uuid        *string                `protobuf:"bytes,1,opt,name=uuid"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *GetRecordRequest) Reset() {
@@ -218,23 +402,57 @@ func (x *GetRecordRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetRecordRequest.ProtoReflect.Descriptor instead.
-func (*GetRecordRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_records_records_proto_rawDescGZIP(), []int{3}
-}
-
 func (x *GetRecordRequest) GetUuid() string {
-	if x != nil && x.Uuid != nil {
-		return *x.Uuid
+	if x != nil {
+		if x.xxx_hidden_Uuid != nil {
+			return *x.xxx_hidden_Uuid
+		}
+		return ""
 	}
 	return ""
 }
 
+func (x *GetRecordRequest) SetUuid(v string) {
+	x.xxx_hidden_Uuid = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
+}
+
+func (x *GetRecordRequest) HasUuid() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *GetRecordRequest) ClearUuid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Uuid = nil
+}
+
+type GetRecordRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Uuid *string
+}
+
+func (b0 GetRecordRequest_builder) Build() *GetRecordRequest {
+	m0 := &GetRecordRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Uuid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
+		x.xxx_hidden_Uuid = b.Uuid
+	}
+	return m0
+}
+
 type DeleteRecordRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          *string                `protobuf:"bytes,1,opt,name=uuid" json:"uuid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Uuid        *string                `protobuf:"bytes,1,opt,name=uuid"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *DeleteRecordRequest) Reset() {
@@ -262,23 +480,55 @@ func (x *DeleteRecordRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteRecordRequest.ProtoReflect.Descriptor instead.
-func (*DeleteRecordRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_records_records_proto_rawDescGZIP(), []int{4}
-}
-
 func (x *DeleteRecordRequest) GetUuid() string {
-	if x != nil && x.Uuid != nil {
-		return *x.Uuid
+	if x != nil {
+		if x.xxx_hidden_Uuid != nil {
+			return *x.xxx_hidden_Uuid
+		}
+		return ""
 	}
 	return ""
 }
 
+func (x *DeleteRecordRequest) SetUuid(v string) {
+	x.xxx_hidden_Uuid = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
+}
+
+func (x *DeleteRecordRequest) HasUuid() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *DeleteRecordRequest) ClearUuid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Uuid = nil
+}
+
+type DeleteRecordRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Uuid *string
+}
+
+func (b0 DeleteRecordRequest_builder) Build() *DeleteRecordRequest {
+	m0 := &DeleteRecordRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Uuid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
+		x.xxx_hidden_Uuid = b.Uuid
+	}
+	return m0
+}
+
 type GetRecordResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Record        *Record                `protobuf:"bytes,1,opt,name=record" json:"record,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Record *Record                `protobuf:"bytes,1,opt,name=record"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *GetRecordResponse) Reset() {
@@ -306,20 +556,44 @@ func (x *GetRecordResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetRecordResponse.ProtoReflect.Descriptor instead.
-func (*GetRecordResponse) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_records_records_proto_rawDescGZIP(), []int{5}
-}
-
 func (x *GetRecordResponse) GetRecord() *Record {
 	if x != nil {
-		return x.Record
+		return x.xxx_hidden_Record
 	}
 	return nil
 }
 
+func (x *GetRecordResponse) SetRecord(v *Record) {
+	x.xxx_hidden_Record = v
+}
+
+func (x *GetRecordResponse) HasRecord() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Record != nil
+}
+
+func (x *GetRecordResponse) ClearRecord() {
+	x.xxx_hidden_Record = nil
+}
+
+type GetRecordResponse_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Record *Record
+}
+
+func (b0 GetRecordResponse_builder) Build() *GetRecordResponse {
+	m0 := &GetRecordResponse{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Record = b.Record
+	return m0
+}
+
 type ListRecordsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state         protoimpl.MessageState `protogen:"opaque.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -349,16 +623,23 @@ func (x *ListRecordsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListRecordsRequest.ProtoReflect.Descriptor instead.
-func (*ListRecordsRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_records_records_proto_rawDescGZIP(), []int{6}
+type ListRecordsRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+}
+
+func (b0 ListRecordsRequest_builder) Build() *ListRecordsRequest {
+	m0 := &ListRecordsRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	return m0
 }
 
 type ListRecordsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Records       []*Record              `protobuf:"bytes,1,rep,name=records" json:"records,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Records *[]*Record             `protobuf:"bytes,1,rep,name=records"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListRecordsResponse) Reset() {
@@ -386,23 +667,38 @@ func (x *ListRecordsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListRecordsResponse.ProtoReflect.Descriptor instead.
-func (*ListRecordsResponse) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_records_records_proto_rawDescGZIP(), []int{7}
-}
-
 func (x *ListRecordsResponse) GetRecords() []*Record {
 	if x != nil {
-		return x.Records
+		if x.xxx_hidden_Records != nil {
+			return *x.xxx_hidden_Records
+		}
 	}
 	return nil
+}
+
+func (x *ListRecordsResponse) SetRecords(v []*Record) {
+	x.xxx_hidden_Records = &v
+}
+
+type ListRecordsResponse_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Records []*Record
+}
+
+func (b0 ListRecordsResponse_builder) Build() *ListRecordsResponse {
+	m0 := &ListRecordsResponse{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Records = &b.Records
+	return m0
 }
 
 var File_pkg_proto_records_records_proto protoreflect.FileDescriptor
 
 const file_pkg_proto_records_records_proto_rawDesc = "" +
 	"\n" +
-	"\x1fpkg/proto/records/records.proto\x12\arecords\x1a\x1bgoogle/protobuf/empty.proto\"z\n" +
+	"\x1fpkg/proto/records/records.proto\x12\arecords\x1a\x1bgoogle/protobuf/empty.proto\x1a!google/protobuf/go_features.proto\"z\n" +
 	"\x06Record\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
@@ -427,19 +723,7 @@ const file_pkg_proto_records_records_proto_rawDesc = "" +
 	"\fUpdateRecord\x12\x1c.records.UpdateRecordRequest\x1a\x16.google.protobuf.Empty\x12D\n" +
 	"\fDeleteRecord\x12\x1c.records.DeleteRecordRequest\x1a\x16.google.protobuf.Empty\x12B\n" +
 	"\tGetRecord\x12\x19.records.GetRecordRequest\x1a\x1a.records.GetRecordResponse\x12H\n" +
-	"\vListRecords\x12\x1b.records.ListRecordsRequest\x1a\x1c.records.ListRecordsResponseB\x0fZ\rrecords/protob\beditionsp\xe8\a"
-
-var (
-	file_pkg_proto_records_records_proto_rawDescOnce sync.Once
-	file_pkg_proto_records_records_proto_rawDescData []byte
-)
-
-func file_pkg_proto_records_records_proto_rawDescGZIP() []byte {
-	file_pkg_proto_records_records_proto_rawDescOnce.Do(func() {
-		file_pkg_proto_records_records_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_pkg_proto_records_records_proto_rawDesc), len(file_pkg_proto_records_records_proto_rawDesc)))
-	})
-	return file_pkg_proto_records_records_proto_rawDescData
-}
+	"\vListRecords\x12\x1b.records.ListRecordsRequest\x1a\x1c.records.ListRecordsResponseB\x17Z\rrecords/proto\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
 
 var file_pkg_proto_records_records_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_pkg_proto_records_records_proto_goTypes = []any{

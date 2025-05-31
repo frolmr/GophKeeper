@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: gophkeeper
+      POSTGRES_PASSWORD: gophkeeper
+      POSTGRES_DB: gophkeeper
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gophkeeper-network
+
+  gophkeeper:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile
+    container_name: gophkeeper
+    environment:
+      - RUN_ADDRESS=${RUN_ADDRESS}
+      - DATABASE_URI=${DATABASE_URI}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - gophkeeper-network
+
+volumes:
+  postgres_data:
+
+networks:
+  gophkeeper-network:
+    driver: bridge

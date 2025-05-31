@@ -48,7 +48,7 @@ func (rs *RecordsService) AddRecord(ctx context.Context, in *pb.AddRecordRequest
 		return nil, status.Error(codes.NotFound, "user not found")
 	}
 
-	inRec := in.Record
+	inRec := in.GetRecord()
 
 	if err := rs.repo.AddRecord(ctx, inRec.GetName(), inRec.GetKind(), inRec.GetPayload(), inRec.GetMetadata(), user.UUID); err != nil {
 		// TODO: server errors shouldn't be passed to user, delete after debug
@@ -150,15 +150,15 @@ func (rs *RecordsService) GetRecord(ctx context.Context, in *pb.GetRecordRequest
 	}
 
 	respRecUUID := existingRec.UUID.String()
-	respRec := pb.Record{
+	respRec := pb.Record_builder{
 		Uuid:     &respRecUUID,
 		Name:     &existingRec.Name,
 		Kind:     &existingRec.Kind,
 		Payload:  existingRec.Payload,
 		Metadata: existingRec.Metadata,
-	}
+	}.Build()
 
-	return &pb.GetRecordResponse{Record: &respRec}, nil
+	return pb.GetRecordResponse_builder{Record: respRec}.Build(), nil
 }
 
 // ListRecords retrievs all the records for the authenticated user.
@@ -177,15 +177,15 @@ func (rs *RecordsService) ListRecords(ctx context.Context, in *pb.ListRecordsReq
 	var respRecords []*pb.Record
 	for _, record := range records {
 		recordUUID := record.UUID.String()
-		respRec := pb.Record{
+		respRec := pb.Record_builder{
 			Uuid:     &recordUUID,
 			Name:     &record.Name,
 			Kind:     &record.Kind,
 			Payload:  record.Payload,
 			Metadata: record.Metadata,
-		}
-		respRecords = append(respRecords, &respRec)
+		}.Build()
+		respRecords = append(respRecords, respRec)
 	}
 
-	return &pb.ListRecordsResponse{Records: respRecords}, nil
+	return pb.ListRecordsResponse_builder{Records: respRecords}.Build(), nil
 }

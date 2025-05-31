@@ -47,8 +47,8 @@ func NewUsersService(repo UsersRepository, lgr *zap.SugaredLogger, jwtManager JW
 
 // RegisterUser registers a new user.
 func (us *UsersService) RegisterUser(ctx context.Context, in *pb.RegisterUserRequest) (*emptypb.Empty, error) {
-	email := *in.Email
-	password := *in.Password
+	email := in.GetEmail()
+	password := in.GetPassword()
 
 	if email == "" || password == "" {
 		return nil, status.Error(codes.Unauthenticated, "invalid login or password")
@@ -82,8 +82,8 @@ func (us *UsersService) RegisterUser(ctx context.Context, in *pb.RegisterUserReq
 
 // LoginUser logsin the existing user.
 func (us *UsersService) LoginUser(ctx context.Context, in *pb.LoginUserRequest) (*emptypb.Empty, error) {
-	email := *in.Email
-	password := *in.Password
+	email := in.GetEmail()
+	password := in.GetPassword()
 
 	if email == "" || password == "" {
 		return nil, status.Error(codes.Unauthenticated, "invalid login or password")

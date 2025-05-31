@@ -45,28 +45,28 @@ func TestRecordsService_AddRecord(t *testing.T) {
 				).Return(nil)
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.AddRecordRequest{
-				Record: &pb.Record{
+			input: pb.AddRecordRequest_builder{
+				Record: pb.Record_builder{
 					Name:     &recordName,
 					Kind:     &recordKind,
 					Payload:  recordPayload,
 					Metadata: recordMetadata,
-				},
-			},
+				}.Build(),
+			}.Build(),
 			expectedError: nil,
 		},
 		{
 			name:       "UserNotFound",
 			setupMocks: func(repo *mocks.MockRecordsRepository) {},
 			ctx:        context.Background(),
-			input: &pb.AddRecordRequest{
-				Record: &pb.Record{
+			input: pb.AddRecordRequest_builder{
+				Record: pb.Record_builder{
 					Name:     &recordName,
 					Kind:     &recordKind,
 					Payload:  recordPayload,
 					Metadata: recordMetadata,
-				},
-			},
+				}.Build(),
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "user not found"),
 		},
 		{
@@ -82,14 +82,14 @@ func TestRecordsService_AddRecord(t *testing.T) {
 				).Return(errors.New("db error"))
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.AddRecordRequest{
-				Record: &pb.Record{
+			input: pb.AddRecordRequest_builder{
+				Record: pb.Record_builder{
 					Name:     &recordName,
 					Kind:     &recordKind,
 					Payload:  recordPayload,
 					Metadata: recordMetadata,
-				},
-			},
+				}.Build(),
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "can't add record: %v", errors.New("db error")),
 		},
 	}
@@ -150,45 +150,45 @@ func TestRecordsService_UpdateRecord(t *testing.T) {
 				).Return(nil)
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.UpdateRecordRequest{
-				Record: &pb.Record{
+			input: pb.UpdateRecordRequest_builder{
+				Record: pb.Record_builder{
 					Uuid:     &recordUUIDStr,
 					Name:     &recordName,
 					Kind:     &recordKind,
 					Payload:  recordPayload,
 					Metadata: recordMetadata,
-				},
-			},
+				}.Build(),
+			}.Build(),
 			expectedError: nil,
 		},
 		{
 			name:       "UserNotFound",
 			setupMocks: func(repo *mocks.MockRecordsRepository) {},
 			ctx:        context.Background(),
-			input: &pb.UpdateRecordRequest{
-				Record: &pb.Record{
+			input: pb.UpdateRecordRequest_builder{
+				Record: pb.Record_builder{
 					Uuid:     &recordUUIDStr,
 					Name:     &recordName,
 					Kind:     &recordKind,
 					Payload:  recordPayload,
 					Metadata: recordMetadata,
-				},
-			},
+				}.Build(),
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "user not found"),
 		},
 		{
 			name:       "InvalidUUID",
 			setupMocks: func(repo *mocks.MockRecordsRepository) {},
 			ctx:        context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.UpdateRecordRequest{
-				Record: &pb.Record{
+			input: pb.UpdateRecordRequest_builder{
+				Record: pb.Record_builder{
 					Uuid:     &invalidUUID,
 					Name:     &recordName,
 					Kind:     &recordKind,
 					Payload:  recordPayload,
 					Metadata: recordMetadata,
-				},
-			},
+				}.Build(),
+			}.Build(),
 			expectedError: status.Error(codes.InvalidArgument, "can't parse record uuid"),
 		},
 		{
@@ -201,15 +201,15 @@ func TestRecordsService_UpdateRecord(t *testing.T) {
 				).Return(nil, nil)
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.UpdateRecordRequest{
-				Record: &pb.Record{
+			input: pb.UpdateRecordRequest_builder{
+				Record: pb.Record_builder{
 					Uuid:     &recordUUIDStr,
 					Name:     &recordName,
 					Kind:     &recordKind,
 					Payload:  recordPayload,
 					Metadata: recordMetadata,
-				},
-			},
+				}.Build(),
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "no records to update"),
 		},
 		{
@@ -222,15 +222,15 @@ func TestRecordsService_UpdateRecord(t *testing.T) {
 				).Return(nil, errors.New("db error"))
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.UpdateRecordRequest{
-				Record: &pb.Record{
+			input: pb.UpdateRecordRequest_builder{
+				Record: pb.Record_builder{
 					Uuid:     &recordUUIDStr,
 					Name:     &recordName,
 					Kind:     &recordKind,
 					Payload:  recordPayload,
 					Metadata: recordMetadata,
-				},
-			},
+				}.Build(),
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "get record error: %v", errors.New("db error")),
 		},
 		{
@@ -247,15 +247,15 @@ func TestRecordsService_UpdateRecord(t *testing.T) {
 				).Return(errors.New("db error"))
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.UpdateRecordRequest{
-				Record: &pb.Record{
+			input: pb.UpdateRecordRequest_builder{
+				Record: pb.Record_builder{
 					Uuid:     &recordUUIDStr,
 					Name:     &recordName,
 					Kind:     &recordKind,
 					Payload:  recordPayload,
 					Metadata: recordMetadata,
-				},
-			},
+				}.Build(),
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "can't add record: %v", errors.New("db error")),
 		},
 	}
@@ -312,27 +312,27 @@ func TestRecordsService_DeleteRecord(t *testing.T) {
 				).Return(nil)
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.DeleteRecordRequest{
+			input: pb.DeleteRecordRequest_builder{
 				Uuid: &recordUUIDStr,
-			},
+			}.Build(),
 			expectedError: nil,
 		},
 		{
 			name:       "UserNotFound",
 			setupMocks: func(repo *mocks.MockRecordsRepository) {},
 			ctx:        context.Background(),
-			input: &pb.DeleteRecordRequest{
+			input: pb.DeleteRecordRequest_builder{
 				Uuid: &recordUUIDStr,
-			},
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "user not found"),
 		},
 		{
 			name:       "InvalidUUID",
 			setupMocks: func(repo *mocks.MockRecordsRepository) {},
 			ctx:        context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.DeleteRecordRequest{
+			input: pb.DeleteRecordRequest_builder{
 				Uuid: &invalidUUID,
-			},
+			}.Build(),
 			expectedError: status.Error(codes.InvalidArgument, "can't parse record uuid"),
 		},
 		{
@@ -345,9 +345,9 @@ func TestRecordsService_DeleteRecord(t *testing.T) {
 				).Return(nil, nil)
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.DeleteRecordRequest{
+			input: pb.DeleteRecordRequest_builder{
 				Uuid: &recordUUIDStr,
-			},
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "no records to delete"),
 		},
 		{
@@ -360,9 +360,9 @@ func TestRecordsService_DeleteRecord(t *testing.T) {
 				).Return(nil, errors.New("db error"))
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.DeleteRecordRequest{
+			input: pb.DeleteRecordRequest_builder{
 				Uuid: &recordUUIDStr,
-			},
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "get record error: %v", errors.New("db error")),
 		},
 		{
@@ -379,9 +379,9 @@ func TestRecordsService_DeleteRecord(t *testing.T) {
 				).Return(errors.New("db error"))
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.DeleteRecordRequest{
+			input: pb.DeleteRecordRequest_builder{
 				Uuid: &recordUUIDStr,
-			},
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "can't add record: %v", errors.New("db error")),
 		},
 	}
@@ -445,33 +445,33 @@ func TestRecordsService_GetRecord(t *testing.T) {
 				}, nil)
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.GetRecordRequest{
+			input: pb.GetRecordRequest_builder{
 				Uuid: &recordUUIDStr,
-			},
-			expectedRecord: &pb.Record{
+			}.Build(),
+			expectedRecord: pb.Record_builder{
 				Uuid:     &recordUUIDStr,
 				Name:     &recordName,
 				Kind:     &recordKind,
 				Payload:  recordPayload,
 				Metadata: recordMetadata,
-			},
+			}.Build(),
 		},
 		{
 			name:       "UserNotFound",
 			setupMocks: func(repo *mocks.MockRecordsRepository) {},
 			ctx:        context.Background(),
-			input: &pb.GetRecordRequest{
+			input: pb.GetRecordRequest_builder{
 				Uuid: &recordUUIDStr,
-			},
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "user not found"),
 		},
 		{
 			name:       "InvalidUUID",
 			setupMocks: func(repo *mocks.MockRecordsRepository) {},
 			ctx:        context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.GetRecordRequest{
+			input: pb.GetRecordRequest_builder{
 				Uuid: &invalidUUID,
-			},
+			}.Build(),
 			expectedError: status.Error(codes.InvalidArgument, "can't parse record uuid"),
 		},
 		{
@@ -484,9 +484,9 @@ func TestRecordsService_GetRecord(t *testing.T) {
 				).Return(nil, nil)
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.GetRecordRequest{
+			input: pb.GetRecordRequest_builder{
 				Uuid: &recordUUIDStr,
-			},
+			}.Build(),
 			expectedError: status.Error(codes.NotFound, "no records to get"),
 		},
 		{
@@ -499,9 +499,9 @@ func TestRecordsService_GetRecord(t *testing.T) {
 				).Return(nil, errors.New("db error"))
 			},
 			ctx: context.WithValue(context.Background(), contextkeys.UserKey, user),
-			input: &pb.GetRecordRequest{
+			input: pb.GetRecordRequest_builder{
 				Uuid: &recordUUIDStr,
-			},
+			}.Build(),
 			expectedError: status.Errorf(codes.Internal, "get record error: %v", errors.New("db error")),
 		},
 	}
@@ -525,7 +525,7 @@ func TestRecordsService_GetRecord(t *testing.T) {
 				assert.EqualError(t, err, tt.expectedError.Error())
 			} else {
 				assert.NoError(t, err)
-				assert.Equal(t, tt.expectedRecord, resp.Record)
+				assert.Equal(t, tt.expectedRecord, resp.GetRecord())
 			}
 		})
 	}
@@ -620,9 +620,9 @@ func TestRecordsService_ListRecords(t *testing.T) {
 				assert.NoError(t, err)
 				assert.Len(t, resp.GetRecords(), tt.expectedCount)
 				if tt.expectedCount > 0 {
-					assert.Equal(t, recordUUID1.String(), *resp.Records[0].Uuid)
-					assert.Equal(t, recordName1, *resp.Records[0].Name)
-					assert.Equal(t, recordKind, *resp.Records[0].Kind)
+					assert.Equal(t, recordUUID1.String(), resp.GetRecords()[0].GetUuid())
+					assert.Equal(t, recordName1, resp.GetRecords()[0].GetName())
+					assert.Equal(t, recordKind, resp.GetRecords()[0].GetKind())
 				}
 			}
 		})
